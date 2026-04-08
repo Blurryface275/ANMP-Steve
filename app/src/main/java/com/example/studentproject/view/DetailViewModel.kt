@@ -14,18 +14,23 @@ class DetailViewModel: ViewModel() {
     val errorLD = MutableLiveData<Boolean>(0)
     val TAG:String = "Volley Tag"
     var queue: RequestQueue?= null
-    fun fetch(student : Student) {
+    fun fetch(id : String) {
         queue = Volley.newRequestQueue(getApplication())
         val url = "https://www.jsonkeeper.com/b/LLMW"
 
-        val stringRequest(Request.Method.GET, url, {},{
+        val stringRequest(Request.Method.GET, url, {
+            val sType = object: TypeToken<Student>() {}.type
+            val result = Gson().fromJson<List<Student>>(it, sType) as ArrayList
+            val student = result.find {it.id == id} as Student
+            studentLD.value = student
+        },{
             Log.d("volley_status", it.message.toString())
-            errorLD.value = true
+            studentLD.value = true
         })
         stringRequest.tag = TAG
         queue.add(stringRequest)
 
-        studentLD.value = student
+
     }
 
     private fun getApplication() {
