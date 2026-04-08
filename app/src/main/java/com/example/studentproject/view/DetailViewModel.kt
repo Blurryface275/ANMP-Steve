@@ -15,6 +15,11 @@ class DetailViewModel: ViewModel() {
     fun fetch(student : Student) {
         queue = Volley.newRequestQueue(getApplication())
         val url = "https://www.jsonkeeper.com/b/LLMW"
+
+        val stringRequest(Request.Method.GET, url, {},{})
+        stringRequest.tag = TAG
+        queue.add(stringRequest)
+
         studentLD.value = student
     }
 
